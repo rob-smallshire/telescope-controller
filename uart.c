@@ -1316,9 +1316,9 @@ void uart3_init(uint16_t baudrate)
 	/* Enable USART receiver and transmitter and receive complete interrupt */
 	UART3_CONTROL = _BV(RXCIE3)|(1<<RXEN3)|(1<<TXEN3);
 
-	/* Set frame format: asynchronous, 8data, no parity, 1 stop bits */
+	/* Set frame format: asynchronous, 8data, no parity, 2 stop bits */
 #ifdef URSEL3
-	UCSR3C = (1<<URSEL3)|(3<<UCSZ30);
+	UCSR3C = (1<<URSEL3)|(3<<UCSZ30)|<<(1<<USBS3);
 #else
 	UCSR3C = (3<<UCSZ30);
 #endif

@@ -117,7 +117,7 @@ Date        Description
 #define USART0_ENABLED
 //#define USART1_ENABLED
 //#define USART2_ENABLED 
-//#define USART3_ENABLED
+#define USART3_ENABLED
 
 /* Set size of receive and transmit buffers */
 
