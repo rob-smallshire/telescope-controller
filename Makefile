@@ -36,7 +36,7 @@ CFLAGS=-std=gnu99 $(OPTIMIZATION) $(WARNINGS) $(CODEGEN)
 CXX=avr-g++
 CXXFLAGS= $(OPTIMIZATION) $(WARNINGS) $(CODEGEN)
 
-LDFLAGS = -Wl,-Map,$(TARGET).map -Wl,--gc-sections
+LDFLAGS = -Wl,-Map,$(TARGET).map -Wl,--gc-sections -Wl,-u,vfprintf -lprintf_flt -lm
 
 CSOURCES=echo.c uart.c
 
