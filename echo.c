@@ -41,7 +41,27 @@ static FILE uart0_stream = FDEV_SETUP_STREAM(
                             uart0_send_byte,
                             uart0_receive_byte,
                             _FDEV_SETUP_RW);
- 
+
+int uart3_send_byte(char data, FILE* UNUSED(stream))
+{
+    uart3_putc(data);
+    return 0;
+}
+
+int uart3_receive_byte(FILE* UNUSED(stream))
+{
+    uint8_t data = uart3_getc();
+    return data;
+}
+
+static FILE uart3_stream = FDEV_SETUP_STREAM(
+                            uart3_send_byte,
+                            uart3_receive_byte,
+                            _FDEV_SETUP_RW);
+
+static FILE* lcdout = &uart3_stream;
+//static FILE* lcdin = &uart3_stream;
+
 int main (void)
 {
     sei();
@@ -75,7 +95,9 @@ int main (void)
     _delay_ms(100);
     uart3_putc(19);
     _delay_ms(100);
-    uart3_puts("Hello, World!\n");
+    fprintf(lcdout, "Hello, lcdout!\r");
+    fprintf(lcdout, "pi = %.3f\r", 3.142);
+    //uart3_puts("Hello, World!\n");
 
     while(1)
     {
