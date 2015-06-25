@@ -99,6 +99,7 @@ int main (void)
     fprintf(lcdout, "pi = %.3f\r", 3.142);
     //uart3_puts("Hello, World!\n");
 
+    printf("Hello, stdout!\n");
     while(1)
     {
        uint16_t v = uart0_getc();
@@ -106,6 +107,7 @@ int main (void)
        {
 	   uint8_t c = v & 0xff; 
             uart0_putc(c);
+            uart3_putc(c);
        }
     } 
     return 0;
