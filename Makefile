@@ -92,3 +92,6 @@ clean:
 
 flash: $(TARGET).hex 
 	$(AVRDUDE) -c $(PROGRAMMER_TYPE) -p $(MCU) $(PROGRAMMER_ARGS) -U flash:w:$<
+
+serial:
+	gtkterm --port $(PORT) --speed 9600 &
