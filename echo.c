@@ -68,6 +68,10 @@ int main (void)
 
     stdin = stdout = &uart0_stream;
 
+    // Set all pins of PORTL for input
+    DDRL  = 0x00;
+    PORTL = 0xff;
+
     /* set pin 7 of PORTB for output*/
     DDRB |= _BV(DDB7);
 
@@ -102,13 +106,27 @@ int main (void)
     printf("Hello, stdout!\n");
     while(1)
     {
-       uint16_t v = uart0_getc();
-       if ((v & 0xff00) == 0)
-       {
-	   uint8_t c = v & 0xff; 
-            uart0_putc(c);
-            uart3_putc(c);
-       }
+	//uint16_t v = uart0_getc();
+	//if ((v & 0xff00) == 0)
+	//{
+	//   uint8_t c = v & 0xff; 
+        //    uart0_putc(c);
+        //    uart3_putc(c);
+        //    
+	//}
+        uint8_t buttons = PINL;
+        uint8_t button0 = buttons & (1 << 0);
+        uint8_t button1 = buttons & (1 << 1);
+        uint8_t button2 = buttons & (1 << 2);
+        uint8_t button3 = buttons & (1 << 3);
+        uint8_t button4 = buttons & (1 << 4);
+        uint8_t button5 = buttons & (1 << 5);
+        uint8_t button6 = buttons & (1 << 6);
+        uint8_t button7 = buttons & (1 << 7);
+        fprintf(stdout, "%d %d %d %d %d %d %d %d\n",
+                button0, button1, button2, button3,
+                button4, button5, button6, button7);
+	_delay_ms(BLINK_DELAY_MS);
     } 
     return 0;
 }
