@@ -9,13 +9,17 @@
 #include <avr/interrupt.h>
 #include <util/atomic.h>
 
-// Buttons connected to PA0 and PA1
-#define BUTTON_PORT  PORTA
-#define BUTTON_PIN   PINA
-#define BUTTON_DDR   DDRA
-#define BUTTON1_MASK (1<<PA0)
-#define BUTTON2_MASK (1<<PA1)
-#define BUTTON_MASK  (BUTTON1_MASK | BUTTON2_MASK)
+// Buttons connected to PL0 to PL4
+#define BUTTON_PORT  PORTL
+#define BUTTON_PIN   PINL
+#define BUTTON_DDR   DDRL
+#define BUTTON_JOYSTICK 1
+#define BUTTON_RIGHT    2
+#define BUTTON_UP       4
+#define BUTTON_DOWN     8
+#define BUTTON_LEFT    16
+
+#define BUTTON_MASK  (BUTTON_JOYSTICK | BUTTON_RIGHT | BUTTON_UP | BUTTON_DOWN | BUTTON_LEFT)
 
 // Variable to tell that the button is pressed (and debounced).
 // Can be read with button_down() which will clear it.
