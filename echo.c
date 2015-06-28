@@ -62,6 +62,12 @@ static FILE uart3_stream = FDEV_SETUP_STREAM(
 static FILE* lcdout = &uart3_stream;
 //static FILE* lcdin = &uart3_stream;
 
+typedef enum { BUTTON_JOYSTICK = 1,
+               BUTTON_RIGHT    = 2,
+               BUTTON_UP       = 4,
+               BUTTON_DOWN     = 8,
+               BUTTON_LEFT     = 16 } Buttons;
+
 int main (void)
 {
     sei();
