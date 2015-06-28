@@ -38,7 +38,7 @@ CXXFLAGS= $(OPTIMIZATION) $(WARNINGS) $(CODEGEN)
 
 LDFLAGS = -Wl,-Map,$(TARGET).map -Wl,--gc-sections -Wl,-u,vfprintf -lprintf_flt -lm
 
-CSOURCES=echo.c uart.c debounce.c
+CSOURCES=echo.c uart.c debounce.c joystick.c
 
 CXXSOURCES=
 

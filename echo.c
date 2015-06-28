@@ -2,6 +2,8 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include "uart.h"
+#include "debounce.h"
+#include "joystick.h"
 
 #include <util/delay.h>
 
@@ -60,20 +62,39 @@ static FILE uart3_stream = FDEV_SETUP_STREAM(
                             _FDEV_SETUP_RW);
 
 static FILE* lcdout = &uart3_stream;
+
 //static FILE* lcdin = &uart3_stream;
+
+// Called at about 100Hz (122Hz)
+ISR(TIMER0_OVF_vect)
+{
+    // Debounce buttons. debounce() is declared static inline
+    // in debounce.h so we will not suffer from the added overhead
+    // of a (external) function call    
+    debounce();
+}
 
 int main (void)
 {
+    // Timer0 normal mode, presc 1:256
+    TCCR0B = 1<<CS02;
+    // Overflow interrupt. (at 16e6/256/256 = 244 Hz)
+    TIMSK0 = 1<<TOIE0;
+
+    debounce_init();
+
+    joystick_init();
+
     sei();
 
     stdin = stdout = &uart0_stream;
 
     // Set all pins of PORTL for input
-    DDRL  = 0x00;
-    PORTL = 0xff;
+    //DDRL  = 0x00;
+    //PORTL = 0xff;
 
     /* set pin 7 of PORTB for output*/
-    DDRB |= _BV(DDB7);
+    //DDRB |= _BV(DDB7);
 
     // USB Serial 0
     uart0_init(UART_BAUD_SELECT(9600, F_CPU));
@@ -114,7 +135,11 @@ int main (void)
         //    uart3_putc(c);
         //    
 	//}
-        uint8_t buttons = PINL;
+        
+
+        uint8_t buttons = button_down(BUTTON_MASK);
+
+        //uint8_t buttons = PINL;
         uint8_t button0 = buttons & (1 << 0);
         uint8_t button1 = buttons & (1 << 1);
         uint8_t button2 = buttons & (1 << 2);
@@ -123,9 +148,14 @@ int main (void)
         uint8_t button5 = buttons & (1 << 5);
         uint8_t button6 = buttons & (1 << 6);
         uint8_t button7 = buttons & (1 << 7);
-        fprintf(stdout, "%d %d %d %d %d %d %d %d\n",
+
+        uint16_t joystick_x = read_adc(0);
+        uint16_t joystick_y = read_adc(1);
+
+        fprintf(stdout, "%d %d %d %d %d %d %d %d %d %d\n",
                 button0, button1, button2, button3,
-                button4, button5, button6, button7);
+		button4, button5, button6, button7,
+		joystick_x, joystick_y);
 	_delay_ms(BLINK_DELAY_MS);
     } 
     return 0;
