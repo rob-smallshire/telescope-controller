@@ -36,7 +36,7 @@ set(AVR_L_FUSE 0xc3)
 # toolchain file via -DCMAKE_TOOLCHAIN_FILE=path/to/generic-gcc-avr.cmake
 # at the cmake command line call
 #
-# include(../generic-gcc-avr.cmake)
+include(generic-gcc-avr.cmake)
 
 ##########################################################################
 # name your project
